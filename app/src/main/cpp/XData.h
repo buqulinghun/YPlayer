@@ -58,6 +58,10 @@ public:
         m_pts = pts;
     }
 
+    int64_t get_pts() {
+        return m_pts;
+    }
+
     void alloc(int size, const char * d = 0);
     void drop();
 

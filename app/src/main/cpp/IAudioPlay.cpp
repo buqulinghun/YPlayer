@@ -3,6 +3,8 @@
 //
 
 #include "IAudioPlay.h"
+#include "Log.h"
+
 void IAudioPlay::update(XData *data) {
     while(!m_exit) {
         m_mutex.lock();
@@ -14,6 +16,7 @@ void IAudioPlay::update(XData *data) {
 
         m_datas.push_back(data);
         m_mutex.unlock();
+        return;
     }
 }
 

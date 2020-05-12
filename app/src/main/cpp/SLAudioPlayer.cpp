@@ -36,7 +36,7 @@ bool SLAudioPlayer::createSL() {
 
 
 static void pcmCall(SLAndroidSimpleBufferQueueItf bf,void *context) {
-    LOGI("SLAudioPlayer");
+//    LOGI("SLAudioPlayer");
 
     SLAudioPlayer *player = (SLAudioPlayer*)context;
     if(!player) {
@@ -57,7 +57,8 @@ static void pcmCall(SLAndroidSimpleBufferQueueItf bf,void *context) {
 
     if(player->m_pcmQue && (*(player->m_pcmQue))) {
         (*player->m_pcmQue)->Enqueue(player->m_pcmQue, buf, size);
-        LOGI("m_pcmQue)->Enqueue");
+        data->drop();
+        LOGI("m_pcmQue)->Enqueue len:%d", size);
     }
 }
 

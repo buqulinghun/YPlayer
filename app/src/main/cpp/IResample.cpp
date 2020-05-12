@@ -9,7 +9,7 @@
 
 void IResample::update(XData *xdata){
     XData *data = resample(xdata);
-    if(!data) {
+    if(data != NULL) {
         notify(data);
     }
 }

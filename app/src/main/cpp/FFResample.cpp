@@ -26,7 +26,7 @@ void FFResample::open(XParam* aParam) {
 
     m_actx = swr_alloc_set_opts(m_actx,
             av_get_default_channel_layout(m_out_channel), m_out_format, avParams->sample_rate,
-            av_get_default_channel_layout(avParams->channels), (AVSampleFormat)avParams->format, avParams->sample_rate,
+            av_get_default_channel_layout(m_out_channel), (AVSampleFormat)avParams->format, avParams->sample_rate,
             0, 0);
     if(m_actx == NULL) {
         LOGE("swr_alloc_set_opts is failed");
@@ -49,11 +49,12 @@ XData* FFResample::resample(XData *xdata){
     }
 
     AVFrame* frame = (AVFrame*)xdata->get_data();
-    int outsize = m_out_channel * frame->nb_samples * av_get_default_channel_layout(m_out_format);
+    int outsize = xdata->get_size();
     if(outsize <= 0) {
         LOGE("outsize:%d", outsize);
         return NULL;
     }
+    LOGI("outsize:%d", outsize);
 
     XData *out = new XData();
     out->alloc(outsize);
@@ -65,14 +66,13 @@ XData* FFResample::resample(XData *xdata){
             (const uint8_t **)frame->data, frame->nb_samples);
 
     if(len < 0) {
-//        out->drop();
         LOGE("swr_convert failed len:%d", len);
         free(out);
         return NULL;
     }
     LOGI("swr_convert success len:%d", len);
     out->set_size(len);
-
+    out->set_pts(xdata->get_pts());
     return out;
 }
 

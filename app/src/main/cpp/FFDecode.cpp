@@ -83,7 +83,7 @@ void FFDecode::mainProcess() {
    while(!m_is_exit) {
         m_mutex.lock();
        if(datas.size() == 0) {
-           LOGI("mainProcess datas is empty");
+//           LOGI("mainProcess datas is empty");
            m_mutex.unlock();
            XSleep(10);
            continue;
@@ -102,10 +102,7 @@ void FFDecode::mainProcess() {
         }
 
         while(!m_is_exit) {
-//            if(m_av_frame == NULL) {
             m_av_frame = av_frame_alloc();
-//            }
-
             ret = avcodec_receive_frame(m_avCodecContext, m_av_frame);
             if(ret != 0) {
                 char err_buf[1024] = {0};
@@ -115,7 +112,6 @@ void FFDecode::mainProcess() {
             }
 
             LOGI("avcodec_receive_frame is success. ret=%d, %s", ret,  m_is_audio?"audio":"video");
-
             if(!m_av_frame->data) {
                 break;
             }
@@ -123,9 +119,9 @@ void FFDecode::mainProcess() {
             LOGI("avcodec_receive_frame success");
             XData *data = new XData();
             data->set_data((uint8_t*)m_av_frame);
-
+            int size;
             if(m_avCodecContext->codec_type == AVMEDIA_TYPE_VIDEO) {
-                int size = (m_av_frame->linesize[0] + m_av_frame->linesize[1] + m_av_frame->linesize[2]) * m_av_frame->height;
+                size = (m_av_frame->linesize[0] + m_av_frame->linesize[1] + m_av_frame->linesize[2]) * m_av_frame->height;
                 data->set_size(size);
                 data->set_width(m_av_frame->width);
                 data->set_height(m_av_frame->height);
@@ -134,13 +130,14 @@ void FFDecode::mainProcess() {
                      m_av_frame->format, m_av_frame->linesize[0], m_av_frame->linesize[1], m_av_frame->linesize[2],
                      m_av_frame->linesize[3], m_av_frame->linesize[4], m_av_frame->linesize[5], m_av_frame->width, m_av_frame->height);
             } else if (m_avCodecContext->codec_type == AVMEDIA_TYPE_AUDIO) {
-                int size = av_get_bytes_per_sample((AVSampleFormat)m_av_frame->format) * m_av_frame->nb_samples * m_av_frame->channels;
+                size = av_get_bytes_per_sample((AVSampleFormat)m_av_frame->format) * m_av_frame->nb_samples * m_av_frame->channels;
                 data->set_size(size);
-                LOGI("yubin frame->format:%d nb_sample:%d channels:%d", m_av_frame->format, m_av_frame->nb_samples, m_av_frame->channels);
+                LOGI("yubin frame->format:%d nb_sample:%d channels:%d size:%d", m_av_frame->format, m_av_frame->nb_samples, m_av_frame->channels, size);
             } else {
                 continue;
             }
 
+            data->set_size(size);
             data->set_frame_data(m_av_frame->data);
             data->set_pts(m_av_frame->pts);
             data->set_data_type(AVFRAME_TYPE);
