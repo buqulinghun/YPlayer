@@ -23,11 +23,11 @@ public:
 
 private:
     char *m_buf;
-    SLEngineItf m_eng;
+   /* SLEngineItf m_eng;
     SLObjectItf m_engineSL;
     SLObjectItf m_mix;
     SLObjectItf m_player;
-    SLPlayItf m_iplayer;
+    SLPlayItf m_iplayer;*/
 };
 
 

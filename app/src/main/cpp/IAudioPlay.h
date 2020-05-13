@@ -17,7 +17,7 @@ public:
     virtual bool startPlay(XParam *aParam)=0;
     virtual void update(XData *data);
     XData* getData();
-    const int MAX_SIZE = 50;
+    const int MAX_SIZE = 200;
 
 protected:
     std::list<XData*> m_datas;

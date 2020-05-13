@@ -71,7 +71,7 @@ void FFDecode::update(XData *data) {
             LOGI("FFDecode::update m_is_audio:%d", m_is_audio);
             datas.push_back(data);
             m_mutex.unlock();
-            break;
+            return;
         }
 
         m_mutex.unlock();

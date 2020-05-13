@@ -15,7 +15,7 @@ extern "C"{
 
 void FFResample::open(XParam* aParam) {
     AVCodecParameters *avParams = aParam->get_codec_paramters();
-    m_out_channel = avParams->channels;
+    m_out_channel = aParam->get_channel();
     m_out_format = AV_SAMPLE_FMT_S16;
 
     m_actx = swr_alloc();
@@ -24,9 +24,10 @@ void FFResample::open(XParam* aParam) {
         return;
     }
 
+    LOGI("FFResample::open sample_rate:%d", avParams->sample_rate);
     m_actx = swr_alloc_set_opts(m_actx,
             av_get_default_channel_layout(m_out_channel), m_out_format, avParams->sample_rate,
-            av_get_default_channel_layout(m_out_channel), (AVSampleFormat)avParams->format, avParams->sample_rate,
+            av_get_default_channel_layout( aParam->get_channel()), (AVSampleFormat)avParams->format, avParams->sample_rate,
             0, 0);
     if(m_actx == NULL) {
         LOGE("swr_alloc_set_opts is failed");
@@ -49,7 +50,7 @@ XData* FFResample::resample(XData *xdata){
     }
 
     AVFrame* frame = (AVFrame*)xdata->get_data();
-    int outsize = xdata->get_size();
+    int outsize = av_get_bytes_per_sample(m_out_format) * m_out_channel * frame->nb_samples;
     if(outsize <= 0) {
         LOGE("outsize:%d", outsize);
         return NULL;
@@ -71,7 +72,7 @@ XData* FFResample::resample(XData *xdata){
         return NULL;
     }
     LOGI("swr_convert success len:%d", len);
-    out->set_size(len);
+//    out->set_size(len);
     out->set_pts(xdata->get_pts());
     return out;
 }

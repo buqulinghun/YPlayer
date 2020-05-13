@@ -9,6 +9,12 @@ extern "C"{
 #include "Log.h"
 #include "XParam.h"
 
+static SLEngineItf m_eng;
+static SLObjectItf m_engineSL;
+static SLObjectItf m_mix;
+static SLObjectItf m_player;
+static SLPlayItf m_iplayer;
+
 SLAudioPlayer::SLAudioPlayer() {
     m_buf = new char[1024 * 1024];
 }
@@ -53,7 +59,7 @@ static void pcmCall(SLAndroidSimpleBufferQueueItf bf,void *context) {
     char* buf = player->get_buf();
     int size = data->get_size();
 
-    memcpy(buf, data, size);
+    memcpy(buf, data->get_data(), size);
 
     if(player->m_pcmQue && (*(player->m_pcmQue))) {
         (*player->m_pcmQue)->Enqueue(player->m_pcmQue, buf, size);
@@ -104,6 +110,7 @@ bool SLAudioPlayer::startPlay(XParam *aParam) {
         SL_PCMSAMPLEFORMAT_FIXED_16,
         SL_PCMSAMPLEFORMAT_FIXED_16,
         SL_SPEAKER_FRONT_LEFT|SL_SPEAKER_FRONT_RIGHT,
+//        SL_BYTEORDER_BIGENDIAN/
         SL_BYTEORDER_LITTLEENDIAN//字节序，小端
     };
     SLDataSource ds = {&que, &pcm};

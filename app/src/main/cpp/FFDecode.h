@@ -24,7 +24,7 @@ private:
     bool m_is_exit = false;
     AVFrame *m_av_frame = NULL;
     std::mutex m_mutex;
-    const int MAX_SIZE = 50;
+    const int MAX_SIZE = 1000;
 };
 
 
