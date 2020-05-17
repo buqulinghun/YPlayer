@@ -1,6 +1,3 @@
-//
-// Created by Administrator on 2020/4/29.
-//
 extern "C" {
 #include <libavutil/frame.h>
 #include <libswscale/swscale.h>
@@ -18,7 +15,7 @@ void FFVideoView::init_player_view(ANativeWindow* nwin, uint32_t width, uint32_t
     m_rgb = new char[width * height *4 + 1];
     memset(m_rgb, 0 , width * height *4 + 1);
 }
-static int i = 0;
+
 void FFVideoView::update(XData *xdata) {
     if(xdata == NULL) {
         LOGE("FFVideoView::update xdata is NULL");

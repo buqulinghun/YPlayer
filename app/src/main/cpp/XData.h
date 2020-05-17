@@ -21,7 +21,7 @@ public:
         m_data = data;
     }
 
-    uint8_t* get_data() {
+    uint8_t*  get_data() {
         return m_data;
     }
 

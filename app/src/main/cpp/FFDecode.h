@@ -10,21 +10,20 @@
 #include <mutex>
 #include "IDecode.h"
 
+struct AVPacket;
+
 struct AVCodecContext;
 struct AVFrame;
 class FFDecode: public IDecode {
 public:
     virtual void open(XParam *param);
-    void update(XData *data);
-    void mainProcess();
+
+protected:
+    bool sendPacket(XData *data);
+    XData* receive_frame();
 
 private:
     AVCodecContext *m_avCodecContext = NULL;
-    std::list<XData*> datas;
-    bool m_is_exit = false;
-    AVFrame *m_av_frame = NULL;
-    std::mutex m_mutex;
-    const int MAX_SIZE = 1000;
 };
 
 
