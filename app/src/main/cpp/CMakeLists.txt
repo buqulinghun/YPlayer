@@ -83,6 +83,16 @@ add_library( # Sets the name of the library.
             ${CPP_PATH}/SLAudioPlayer.cpp
             ${CPP_PATH}/XData.cpp
             ${CPP_PATH}/XData.h
+            ${CPP_PATH}/XTexture.cpp
+            ${CPP_PATH}/XTexture.h
+            ${CPP_PATH}/GLVideoView.cpp
+            ${CPP_PATH}/GLVideoView.h
+            ${CPP_PATH}/GLVideoView.cpp
+            ${CPP_PATH}/GLVideoView.h
+            ${CPP_PATH}/XShader.cpp
+            ${CPP_PATH}/Xshader.h
+            ${CPP_PATH}/XEGL.cpp
+            ${CPP_PATH}/XEGL.h
          )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -104,6 +114,7 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
                         native-lib
+                        GLESv2 EGL
                         android OpenSLES avcodec avformat avutil swscale swresample
                        # Links the target library to the log library
                        # included in the NDK.

@@ -9,6 +9,7 @@
 #include "FFDemux.h"
 #include "FFResample.h"
 #include "SLAudioPlayer.h"
+#include "GLVideoView.h"
 
 FFPlayerBuilder::FFPlayerBuilder() {
     LOGI("FFPlayerBuilder::FFPlayerBuilder()");
@@ -62,5 +63,5 @@ IAudioPlay* FFPlayerBuilder::createAudioPlay() {
 }
 
 IVideoView* FFPlayerBuilder::createVideo() {
-    return new FFVideoView();
+    return new GLVideoView();
 }

@@ -42,8 +42,16 @@ public:
         m_width = w;
     }
 
+    int get_width() {
+        return m_width;
+    }
+
     void set_height(int h) {
         m_height = h;
+    }
+
+    int get_height() {
+        return m_height;
     }
 
     void set_format(int format) {
@@ -52,6 +60,10 @@ public:
 
     void set_frame_data(unsigned char** frame_data) {
         memcpy(m_frame_data, frame_data, sizeof(m_frame_data));
+    }
+
+    unsigned char** get_frame_data() {
+        return m_frame_data;
     }
 
     void set_pts(int64_t pts) {
@@ -71,6 +83,10 @@ public:
 
     void set_data_type(XDataType dataType) {
         m_dataType = dataType;
+    }
+
+    int get_format() {
+        return m_format;
     }
 
     ~XData() {

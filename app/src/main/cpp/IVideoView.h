@@ -13,6 +13,7 @@
 class IVideoView : public IObserver {
 public:
     virtual void init_player_view(ANativeWindow* nwin, uint32_t width, uint32_t height)=0;
+    virtual void update(XData *xdata)=0;
 };
 
 
